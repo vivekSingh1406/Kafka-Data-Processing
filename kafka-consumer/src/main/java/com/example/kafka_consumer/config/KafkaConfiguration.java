@@ -34,8 +34,7 @@ public class KafkaConfiguration {
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, String> factory =
-                new ConcurrentKafkaListenerContainerFactory<>();
+        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }
@@ -53,8 +52,7 @@ public class KafkaConfiguration {
         JsonDeserializer<User> userDeserializer = new JsonDeserializer<>(User.class);
         userDeserializer.addTrustedPackages(
                 "com.example.kafka_consumer.model",
-                "com.example.kafka_producer.model"
-        );
+                "com.example.kafka_producer.model");
         userDeserializer.setUseTypeHeaders(false);
 
         return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(), userDeserializer);
@@ -64,7 +62,7 @@ public class KafkaConfiguration {
     public ConcurrentKafkaListenerContainerFactory<String, User> userKafkaListenerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, User> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(userConsumerFactory());
-        //factory.setMissingTopicsFatal(false);
+        factory.setMissingTopicsFatal(false);
         return factory;
     }
 }

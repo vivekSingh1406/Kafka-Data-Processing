@@ -12,7 +12,8 @@ public class KafkaController {
     private final KafkaTemplate<String, User> kafkaTemplate;
     private final String topic;
 
-    public KafkaController(KafkaTemplate<String, User> kafkaTemplate,
+    public KafkaController(
+            KafkaTemplate<String, User> kafkaTemplate,
             @Value("${app.kafka.topic}") String topic) {
         this.kafkaTemplate = kafkaTemplate;
         this.topic = topic;

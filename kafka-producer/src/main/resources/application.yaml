@@ -1,3 +1,10 @@
+server:
+  port: 9090
 spring:
   application:
     name: kafka-producer
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092
+app:
+  kafka:
+    topic: kafka-spring-producer

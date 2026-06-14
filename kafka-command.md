@@ -2,7 +2,6 @@
 
 > Kafka 4.3.0 installed via Homebrew on macOS  
 > Broker: `localhost:9092` | Mode: KRaft (no Zookeeper needed)  
-> ⚠️ On Mac with Homebrew, use `kafka-topics` NOT `kafka-topics.sh`
 
 ---
 

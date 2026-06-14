@@ -1,4 +1,4 @@
-# Kafka Commands — Mac (Homebrew) Reference Guide
+# Kafka Commands
 
 > Kafka 4.3.0 installed via Homebrew on macOS  
 > Broker: `localhost:9092` | Mode: KRaft (no Zookeeper needed)  

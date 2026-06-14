@@ -471,7 +471,3 @@ kafka-consumer-groups \
 | Broker KRaft status | `kafka-metadata-quorum --bootstrap-server localhost:9092 describe --status` |
 
 ---
-
-> ⚠️ **Mac Homebrew Note:** Always use commands **without** `.sh` extension.  
-> ✅ `kafka-topics` → works  
-> ❌ `kafka-topics.sh` → `zsh: command not found`

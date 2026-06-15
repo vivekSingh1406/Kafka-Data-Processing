@@ -517,7 +517,3 @@ kafka-dump-log \
 | Format storage | N/A | `kafka-storage format --config server.properties --cluster-id <UUID>` |
 
 ---
-
-> 💡 **Bottom Line:** KRaft isn't just "Kafka without ZooKeeper." It's a complete rearchitecting of how Kafka manages its own state — moving from an external coordinator to a self-managed, Raft-based metadata log that makes Kafka faster, simpler, and infinitely more scalable.
-
-> ⚡ **For Mac Homebrew users (Kafka 4.3.0):** You're already on KRaft. `brew install kafka` gives you KRaft mode by default. ZooKeeper is gone — that's why `kafka-topics --zookeeper ...` gives you a "command not found" or "option not recognized" error.

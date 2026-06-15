@@ -4,8 +4,6 @@
 
 ## Part 1: How Kafka Works
 
-### The Core Idea
-
 Kafka is a **distributed event streaming platform**. Think of it like a **post office for data**:
 - Applications (Producers) **send letters (events/messages)**
 - Letters go into **mailboxes sorted by category (Topics)**
@@ -13,7 +11,6 @@ Kafka is a **distributed event streaming platform**. Think of it like a **post o
 - A **mail server (Broker)** stores everything safely
 - Recipients (Consumers) **pick up their letters** and mark which ones they've read (Offset)
 
----
 
 ## Part 2: Every Component Explained
 
@@ -307,11 +304,9 @@ public void listen(
 
 ---
 
-## Part 4: Interview Questions — Basic to Tricky
+## Part 4: Some Questions
 
 ---
-
-### 🟢 Basic Questions
 
 **Q1. What is Kafka and why is it used?**
 > Kafka is a distributed event streaming platform used to build real-time data pipelines. It's used for high-throughput, fault-tolerant, ordered message processing across microservices.
@@ -328,10 +323,6 @@ public void listen(
 **Q5. What is a Consumer Group?**
 > A consumer group is a set of consumers that share the work of reading a topic. Each partition is assigned to exactly one consumer in the group, enabling parallel processing.
 
----
-
-### 🟡 Intermediate Questions
-
 **Q6. What happens when you have more consumers than partitions in a group?**
 > Extra consumers will sit **idle**. Kafka assigns each partition to at most one consumer per group. So with 3 partitions and 5 consumers, 2 consumers receive no messages.
 
@@ -347,30 +338,26 @@ public void listen(
 **Q10. What is Consumer Lag?**
 > Consumer lag is the difference between the latest offset in a partition (Log End Offset) and the consumer's current offset. High lag means the consumer is behind and not keeping up with producers.
 
----
-
-### 🔴 Advanced / Tricky Questions
-
-**Q11. ⚠️ Can Kafka guarantee exactly-once delivery? How?**
+**Q11. Can Kafka guarantee exactly-once delivery? How?**
 > Yes, but it requires three things working together:
 > 1. **Idempotent Producer** (`enable.idempotence=true`) — prevents duplicate writes
 > 2. **Transactions** — producer wraps sends in `beginTransaction()`/`commitTransaction()`
 > 3. **Consumer `isolation.level=read_committed`** — consumer only reads committed messages
 > Without all three, you get at-least-once at best.
 
-**Q12. ⚠️ What is a Rebalance and when does it cause problems?**
+**Q12. What is a Rebalance and when does it cause problems?**
 > A rebalance happens when consumers join or leave a group, causing Kafka to redistribute partitions. During rebalance, ALL consumers stop processing (stop-the-world). Problems arise when:
 > - Rebalances happen frequently (consumer crashes, slow processing exceeding `max.poll.interval.ms`)
 > - Processing is stateful and partition reassignment loses in-memory state
 > Solution: Use `CooperativeStickyAssignor` for incremental rebalances that avoid full stop-the-world pauses.
 
-**Q13. ⚠️ Why can a consumer read duplicate messages even with auto-commit enabled?**
+**Q13. Why can a consumer read duplicate messages even with auto-commit enabled?**
 > Auto-commit runs on a timer (default 5 seconds). If a consumer reads messages, processes them, but crashes before the next auto-commit, the offset is never committed. When the consumer restarts, it re-reads from the last committed offset → duplicates. Solution: Use manual `commitSync()` after processing.
 
-**Q14. ⚠️ What is the difference between Kafka's `__consumer_offsets` topic and a database?**
+**Q14. What is the difference between Kafka's `__consumer_offsets` topic and a database?**
 > `__consumer_offsets` is an internal Kafka topic that stores consumer group offsets. Unlike a database, it's append-only, replicated across brokers, and compacted (keeps only the latest offset per group+partition). It's what allows Kafka to resume consumption after restarts without an external database.
 
-**Q15. ⚠️ If a broker goes down, what exactly happens step by step?**
+**Q15. If a broker goes down, what exactly happens step by step?**
 > 1. The Controller Broker detects the failure (via heartbeat timeout)
 > 2. For each partition where the failed broker was the **leader**, the controller elects a new leader from the ISR
 > 3. The cluster metadata is updated with new leaders
@@ -378,25 +365,25 @@ public void listen(
 > 5. They reconnect to the new leader and resume
 > If the failed broker was only a follower → no interruption to producers/consumers.
 
-**Q16. ⚠️ What happens if `min.insync.replicas` is 2 but only 1 replica is in ISR?**
+**Q16. What happens if `min.insync.replicas` is 2 but only 1 replica is in ISR?**
 > The producer (with `acks=all`) will receive a `NotEnoughReplicasException`. Kafka refuses to accept the write because it cannot guarantee the durability contract. This is a safety feature — it prevents data loss at the cost of availability.
 
-**Q17. ⚠️ How does Kafka handle back-pressure?**
+**Q17. How does Kafka handle back-pressure?**
 > Kafka doesn't push messages to consumers — consumers **pull** at their own pace. This is built-in back-pressure. If a consumer is slow, it simply polls less frequently. The messages remain in Kafka until the retention period expires. Contrast with RabbitMQ, which pushes messages and can overwhelm slow consumers.
 
-**Q18. ⚠️ What is Log Compaction and when would you use it?**
+**Q18. What is Log Compaction and when would you use it?**
 > Log compaction is a Kafka cleanup policy where Kafka keeps only the **latest value for each key**. Instead of deleting old messages after a time period, it deletes old values for keys that have been updated.
 > Use case: **Change Data Capture (CDC)** or **user profile snapshots** where you only need the latest state, not the full history.
 > Enable with: `cleanup.policy=compact`
 
-**Q19. ⚠️ You have 6 partitions and 3 consumers. One consumer dies. What happens?**
+**Q19. You have 6 partitions and 3 consumers. One consumer dies. What happens?**
 > 1. Kafka detects the consumer left the group (via heartbeat timeout or explicit leave)
 > 2. A **rebalance** is triggered
 > 3. The 2 partitions that belonged to the dead consumer are redistributed to the 2 remaining consumers
 > 4. Now each surviving consumer handles 3 partitions
 > 5. Lag accumulates during the rebalance window
 
-**Q20. ⚠️ What is the difference between a KafkaTemplate send and a transactional send in Spring?**
+**Q20. What is the difference between a KafkaTemplate send and a transactional send in Spring?**
 > Regular `kafkaTemplate.send()` sends immediately with at-least-once guarantee. Transactional send wraps multiple sends in a transaction:
 > ```java
 > kafkaTemplate.executeInTransaction(kt -> {

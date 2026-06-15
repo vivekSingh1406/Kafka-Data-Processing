@@ -1,8 +1,8 @@
-# Kafka Deep Dive — Architecture, Components & Interview Questions
+# Kafka Deep Dive — Architecture, Components
 
 ---
 
-## Part 1: How Kafka Works — The Full Picture
+## Part 1: How Kafka Works
 
 ### The Core Idea
 
@@ -15,7 +15,7 @@ Kafka is a **distributed event streaming platform**. Think of it like a **post o
 
 ---
 
-## Part 2: Every Component Explained In Depth
+## Part 2: Every Component Explained
 
 ---
 
@@ -428,7 +428,3 @@ public void listen(
 | Log Compaction | Keep only latest value per key — great for state snapshots |
 
 ---
-
-> 💡 **Golden Rule:** Ordering in Kafka is per-partition, not per-topic. Design your partition key strategy based on what needs to be ordered relative to each other.
-
-> ⚡ **Interview Tip:** If asked "how many consumers can you have?" → answer is bounded by the number of partitions. Extra consumers are idle. To increase parallelism, increase partitions first.

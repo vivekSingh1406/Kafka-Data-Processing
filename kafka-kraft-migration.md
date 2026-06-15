@@ -1,4 +1,4 @@
-# Kafka: ZooKeeper vs KRaft — Complete Deep Dive
+# Kafka: ZooKeeper vs KRaft
 
 > Kafka 4.0+ removes ZooKeeper entirely. KRaft (Kafka Raft Metadata) is now the only mode.  
 ---

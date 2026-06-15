@@ -1,11 +1,4 @@
-# Apache Kafka — 20 Interview Questions & Answers
-> Senior Backend Interview Prep | Topics → Streams → Schema Registry
-
----
-
-## 🟢 Section 1: Fundamentals
-
----
+# Apache Kafka Introduction
 
 ### Q1. What is Apache Kafka?
 
@@ -116,10 +109,6 @@ Partition 0:
 - **Manual commit** — `commitSync()` or `commitAsync()` — precise control
 
 **Key insight:** Offsets are **per-consumer-group per-partition**. Different consumer groups have independent offsets for the same topic — they don't interfere with each other.
-
----
-
-## 🟣 Section 2: Producers & Consumers
 
 ---
 
@@ -691,5 +680,3 @@ Partitioning    ──► Horizontal parallelism
 | Why Fast | Seq I/O + Zero-copy + Batching + Compression + Partitioning |
 
 ---
-
-*Prepared for Vivek | Apache Kafka Senior Backend Interview Prep*
